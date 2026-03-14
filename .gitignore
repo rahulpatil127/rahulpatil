@@ -1,0 +1,19 @@
+# VS Code
+.vscode/
+*.code-workspace
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# Dependencies (if you use npm/yarn)
+node_modules/
+
+# Build artifacts (if applicable)
+dist/
+build/
+
+# IDE specific files
+*.suo
+*.user
+*.log
