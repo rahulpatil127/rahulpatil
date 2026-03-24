@@ -417,45 +417,36 @@ if (contactModal) {
 }
 
 // ===== FORM SUBMISSION =====
-const contactForm = document.getElementById('contact-form');
+const contactForm = document.getElementById("contact-form");
 
 if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
+    contactForm.addEventListener("submit", function (e) {
         e.preventDefault();
 
-        // Get form data
         const formData = new FormData(contactForm);
-        const name = formData.get('name');
-        const email = formData.get('email');
-        const message = formData.get('message');
 
-        // Simple validation
-        if (name && email && message) {
-            // Send email using EmailJS (you'll need to set this up)
-            // For now, simulating success
-            alert(`Thank you, ${name}! Your message has been received. I'll get back to you soon at ${email}.`);
-            contactForm.reset();
-            contactModal.classList.remove('active');
-            document.body.style.overflow = 'auto';
+        fetch("https://formspree.io/f/xjgaqdyy", {
+            method: "POST",
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                alert("✅ Message sent successfully!");
+                contactForm.reset();
 
-            // TODO: Replace with actual EmailJS integration
-            // Step 1: Sign up at emailjs.com
-            // Step 2: Add this script to index.html: <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-            // Step 3: Initialize EmailJS and replace the alert above with:
-            // emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
-            //     from_name: name,
-            //     from_email: email,
-            //     message: message,
-            //     to_email: 'Sarveshpawar004@gmail.com'
-            // }).then(() => {
-            //     alert(`Thank you, ${name}! Your message has been sent.`);
-            //     contactForm.reset();
-            //     contactModal.classList.remove('active');
-            //     document.body.style.overflow = 'auto';
-            // });
-        } else {
-            alert('Please fill in all fields.');
-        }
+                // close modal
+                contactModal.classList.remove("active");
+                document.body.style.overflow = "auto";
+            } else {
+                alert("❌ Something went wrong!");
+            }
+        })
+        .catch(error => {
+            alert("❌ Error sending message!");
+        });
     });
 }
 
